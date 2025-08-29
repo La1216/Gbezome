@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gbezome Kingdom</title>
+  <meta name="description" content="Gbezome Kingdom — photo album & members site" />
+
+  <!-- Google font (optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ------------------------
+       Colors & layout tokens
+       ------------------------*/
+    :root{
+      --bg:#0f1724; /* navy-gray */
+      --card:#0b1220;
+      --muted:#9aa7c7;
+      --accent1: linear-gradient(120deg,#8b5cf6 0%, #06b6d4 100%);
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --maxw:1200px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background:linear-gradient(180deg,#061026 0%, #071226 60%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
+
+    /* ------------------------
+       Top nav
+       ------------------------*/
+    .topnav{
+      position:fixed;left:0;right:0;top:0;z-index:60;
+      background:linear-gradient(90deg, rgba(3,7,18,0.6), rgba(3,7,18,0.35));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:12px 18px;
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:48px;height:48px;border-radius:10px;overflow:hidden;flex:none;
+      background:linear-gradient(135deg,#06b6d4,#8b5cf6);
+      display:grid;place-items:center;font-weight:800;color:white;font-size:16px;
+      box-shadow:0 6px 18px rgba(11,22,50,0.6);
+    }
+    .brand h1{font-size:16px;margin:0}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+    .navlinks{display:flex;gap:8px;align-items:center}
+    .navlinks a{padding:8px 12px;border-radius:10px;display:flex;gap:8px;align-items:center;font-weight:600;font-size:14px;color:var(--muted)}
+    .navlinks a:hover{background:var(--glass);color:#fff}
+
+    .menu-toggle{display:none;background:transparent;border:0;color:var(--muted);padding:8px;border-radius:8px}
+
+    /* ------------------------
+       Hero
+       ------------------------*/
+    .hero{min-height:70vh;display:flex;align-items:center;justify-content:center;padding-top:72px}
+    .hero .hero-inner{width:100%;max-width:var(--maxw);padding:40px;display:flex;align-items:center;justify-content:center}
+    .hero-card{
+      width:100%;height:820px;border-radius:18px;overflow:hidden;position:relative;
+      box-shadow:0 30px 60px rgba(2,6,23,0.7);
+      transform:translateY(0);transition:transform .6s cubic-bezier(.2,.9,.3,1);
+    }
+    .hero-card:hover{transform:translateY(-6px)}
+    .hero-card .media{position:absolute;inset:0;background-size:cover;background-position:center;filter:contrast(.95) saturate(1.1)}
+    .hero-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,11,27,0.25),rgba(2,6,23,0.75));mix-blend-mode:multiply}
+    .hero-card .overlay{position:absolute;inset:0;display:flex;align-items:flex-end;padding:38px}
+    .title{font-size:48px;line-height:1;color:white;margin:0;font-weight:800;letter-spacing:1px;text-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .subtitle{color:var(--muted);margin-top:6px;font-weight:500}
+
+    /* ------------------------
+       Sections
+       ------------------------*/
+    main{padding:40px 18px 120px}
+    .wrap{max-width:var(--maxw);margin:0 auto}
+
+    .section-title{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .section-title h2{margin:0;font-size:24px}
+    .section-desc{color:var(--muted);margin-bottom:18px}
+
+    /* Officials layout */
+    .president-card{display:flex;gap:20px;align-items:center;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .president-card .photo{flex:0 0 260px;height:260px;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .president-card .info{flex:1}
+    .president-card h3{margin:0 0 8px 0;font-size:20px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;background:linear-gradient(90deg,#7c3aed,#06b6d4);color:white;font-size:12px}
+    .role-desc{color:var(--muted);margin-top:12px}
+
+    .members-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:18px}
+    .member-card{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);display:flex;gap:12px;align-items:center;transition:transform .3s ease, box-shadow .3s ease;flex-direction: column;text-align: center;}
+    .member-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(10,20,40,0.6)}
+    .member-photo{width:200px;height:200px;border-radius:10px;overflow:hidden;flex:none}
+    .member-info h4{margin:0;font-size:15px}
+    .member-info p{margin:4px 0 0 0;color:var(--muted);font-size:13px}
+
+    /* Galleries */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .gallery-item{border-radius:12px;overflow:hidden;position:relative;background:var(--glass-2);cursor:pointer}
+    .gallery-item img{width:100%;height:420px;object-fit:cover;display:block;transition:transform .5s ease}
+    .gallery-item:hover img{transform:scale(1.06)}
+    .caption{position:absolute;left:12px;bottom:12px;background:linear-gradient(90deg,rgba(0,0,0,0.5),rgba(0,0,0,0.2));padding:8px 10px;border-radius:8px;font-weight:700}
+    .gallery-desc{color:var(--muted);margin-top:8px}
+
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.85);z-index:120;padding:24px}
+    .lightbox.open{display:flex}
+    .lightbox .box{max-width:1100px;width:100%;border-radius:12px;overflow:hidden;position:relative}
+    .lightbox img{width:70%;height:fit-content;display:block}
+    .lightbox .meta{position:absolute;left:18px;bottom:18px;color:white;font-weight:700;text-shadow:0 4px 14px rgba(0,0,0,0.6)}
+    .lightbox .close{position:absolute;right:16px;top:16px;background:transparent;color:white;border:0;font-size:22px;padding:8px}
+    .lightbox .navbtn{position:absolute;top:50%;transform:translateY(-50%);background:transparent;border:0;color:white;font-size:28px;padding:18px}
+    .lightbox .prev{left:8px}
+    .lightbox .next{right:8px}
+
+    /* Footer */
+    footer{padding:28px 18px;background:linear-gradient(180deg,transparent,rgba(2,6,23,0.3));border-top:1px solid rgba(255,255,255,0.02);}
+    .foot-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .foot-inner p{margin:0;color:var(--muted)}
+
+    /* ------------------------
+       Responsive tweaks
+       ------------------------*/
+    @media (max-width:900px){
+      .hero-card{height:360px}
+      .president-card{flex-direction:column;align-items:flex-start}
+      .president-card .photo{width:100%;height:200px}
+      .navlinks{display:none}
+      .menu-toggle{display:inline-flex}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      .hero-card{height:300px}
+      .gallery{grid-template-columns:repeat(1,1fr)}
+      .hero .title{font-size:28px}
+    }
+
+    /* little entrance animation */
+    .fade-up{opacity:0;transform:translateY(8px);animation:fadeUp .7s forwards}
+    @keyframes fadeUp{to{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+
+  <!-- Top navigation -->
+  <header class="topnav">
+    <div class="brand">
+      <div class="logo">GK</div>
+      <div>
+        <h1>Gbezome Kingdom</h1>
+        <p>Seven brothers — photo album & members</p>
+      </div>
+    </div>
+
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#officials">Officials</a>
+      <a href="#signout">Sign-out</a>
+      <a href="#valedictory">Valedictory</a>
+      <a href="#prom">Prom</a>
+      <a href="#funny">Funny Casts</a>
+    </nav>
+
+    <button class="menu-toggle" aria-expanded="false" aria-label="Open menu">☰</button>
+  </header>
+
+  <!-- Hero / front page -->
+  <section id="home" class="hero" role="region" aria-label="Home">
+    <div class="hero-inner wrap">
+      <div class="hero-card" role="img" aria-label="Gbezome Kingdom group photo">
+        <!-- Replace the URL below with your actual group photo -->
+        <div class="media" style="background-image:url('../FAI/Gbezome\ group.jpg');"></div>
+        <div class="overlay">
+          <div>
+            <h2 class="title">Gbezome Kingdom</h2>
+            <p class="subtitle">Seven brothers — memories, events, laughs</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <!-- Officials / Members -->
+    <section id="officials" class="wrap fade-up" role="region" aria-labelledby="officials-title">
+      <div class="section-title">
+        <h2 id="officials-title">Officials & Members</h2>
+      </div>
+      <p class="section-desc">Meet the Seven members of Gbezome Kingdom. Click pictures to view larger. The hierarchy starts with the President.</p>
+
+      <!-- President (featured) -->
+      <article class="president-card" style="margin-bottom:18px">
+        <div class="photo">
+          <!-- Replace with actual president photo -->
+          <img src="../FAI/pres v.jpg" alt="President - Member 1">
+        </div>
+        <div class="info">
+          <div style="display:flex;align-items:center;gap:12px">
+            <h3>Lil Dane</h3>
+            <span class="badge">President</span>
+          </div>
+
+          <p style="margin-top:8px;color:var(--muted);font-weight:600">Post: President — Head of Gbezome Kingdom</p>
+
+          <p class="role-desc">Role: As President, Ahmed leads the group: plans meetings, represents Gbezome Kingdom at events, mediates disputes, assigns responsibilities, and helps set the group's vision. He organizes major activities and ensures everyone is included and heard.</p>
+
+          <p style="margin-top:12px;color:var(--muted);font-size:13px">Contact & socials: (instagram:_nigeri4n_jok3r)</p>
+        </div>
+      </article>
+
+      <!-- Other officials grid -->
+      <div class="members-grid">
+        <!-- Vice President -->
+        <div class="member-card">
+          <div class="member-photo"><img src="../FAI/tommy v.jpg" alt="Vice President"></div>
+          <div class="member-info">
+            <h4>Tommy G</h4>
+            <p>Vice President — Supports the President, steps in when President is unavailable, helps coordinate projects.</p>
+          </div>
+        </div>
+
+        <!-- General Secretary 1 -->
+        <div class="member-card">
+          <div class="member-photo"><img src="../FAI/Robo v.jpg" alt="General Secretary"></div>
+          <div class="member-info">
+            <h4>Roboshirobo</h4>
+            <p>General Secretary— Keeps records, takes minutes, manages group documentation and correspondence.</p>
+          </div>
+        </div>
+
+        <!-- PRO -->
+        <div class="member-card">
+          <div class="member-photo"><img src="../FAI/kalex v.jpg" alt="Public Relations Officer"></div>
+          <div class="member-info">
+            <h4>Kalex</h4>
+            <p>Public Relations Officer — Manages social media, public image, creates posters and announces events.</p>
+          </div>
+        </div>
+
+        <!-- Member: Treasurer -->
+        <div class="member-card">
+          <div class="member-photo"><img src="../FAI/famzy v.jpg" alt="Treasurer"></div>
+          <div class="member-info">
+            <h4>Famzy Da King 👑</h4>
+            <p>Treasurer Manages funds, tracks contributions and expenses, and reports finances to the group.</p>
+          </div>
+        </div>
+
+        <!-- Member: Events Coordinator -->
+        <div class="member-card">
+          <div class="member-photo"><img src="../FAI/simony.jpg" alt="Events Coordinator"></div>
+          <div class="member-info">
+            <h4>Simoney</h4>
+            <p>Events Coordinator Plans meetups, arranges logistics for photoshoots and outings, books venues.</p>
+          </div>
+        </div>
+
+        <!-- Member: Creative Lead -->
+        <div class="member-card">
+          <div class="member-photo"><img src="../FAI/Adesina.jpg" alt="Creative Lead"></div>
+          <div class="member-info">
+            <h4>Adesina</h4>
+            <p>Creative Lead — Visuals, styling, edits photos, curates the group's look and creative direction.</p>
+          </div>
+        </div>
+
+        <!-- Member: Welfare Officer
+        <div class="member-card">
+          <div class="member-photo"><img src="https://placehold.co/180x180?text=Welfare" alt="Welfare Officer"></div>
+          <div class="member-info">
+            <h4>Hassan</h4>
+            <p>Welfare Officer — Looks out for members' wellbeing, coordinates support and ensures everyone's ok.</p>
+          </div>
+        </div> -->
+
+      </div>
+
+    </section>
+
+    <!-- Sign-out pictures -->
+    <section id="signout" class="wrap fade-up" style="margin-top:38px;">
+      <div class="section-title"><h2>Sign-out Pictures</h2></div>
+      <p class="section-desc">All our sign-out photos, beautifully aligned. Click to enlarge and read descriptions.</p>
+
+      <div class="gallery" aria-live="polite">
+        <!-- replace src with your photos and update data-caption -->
+        <div class="gallery-item" data-caption="Sign-out 1 — Team leaving together."><img src="../FAI/s1.jpg" alt="Sign-out 1"><div class="caption">Dem Boyz</div></div>
+        <div class="gallery-item" data-caption="Sign-out 2 — Sunset goodbyes."><img src="../FAI/s2.jpg" alt="Sign-out 2"><div class="caption">Presido with the Boyz</div></div>
+        <div class="gallery-item" data-caption="Sign-out 3 — Joyful steps."><img src="../FAI/s3.jpg" alt="Sign-out 3"><div class="caption">Exclusive member pictures</div></div>
+
+        <div class="gallery-item" data-caption="Sign-out 4 — Group wave."><img src="../FAI/s4.jpg" alt="Sign-out 4"><div class="caption">Star Boy Da King</div></div>
+        <div class="gallery-item" data-caption="Sign-out 5 — Candid laughs."><img src="../FAI/s5.jpg" alt="Sign-out 5"><div class="caption">Scammers Oshi</div></div>
+        <div class="gallery-item" data-caption="Sign-out 6 — Last selfie."><img src="../FAI/s6.jpg" alt="Sign-out 6"><div class="caption">Gamersss</div></div>
+
+        <div class="gallery-item" data-caption="Sign-out 7 — Group wave."><img src="../FAI/s7.jpg" alt="Sign-out 4"><div class="caption">#Robo</div></div>
+        <div class="gallery-item" data-caption="Sign-out 8 — Candid laughs."><img src="../FAI/s8.jpg" alt="Sign-out 5"><div class="caption">Mafia Kalex</div></div>
+        <div class="gallery-item" data-caption="Sign-out 9 — Last selfie."><img src="../FAI/s9.jpg" alt="Sign-out 6"><div class="caption">Head Scammer & Junior Scammer</div></div>
+        
+
+        <div class="gallery-item" data-caption="Sign-out 10 — Group wave."><img src="../FAI/s10.jpg" alt="Sign-out 4"><div class="caption">#Famzy</div></div>
+        <div class="gallery-item" data-caption="Sign-out 11 — Candid laughs."><img src="../FAI/s11.jpg" alt="Sign-out 5"><div class="caption">#Gbezome </div></div>
+        <div class="gallery-item" data-caption="Sign-out 12 — Last selfie."><img src="../FAI/s12.jpg" alt="Sign-out 6"><div class="caption">#@everyone</div></div>
+        
+      </div>
+    </section>
+
+    <!-- Valedictory -->
+    <!-- <section id="valedictory" class="wrap fade-up" style="margin-top:38px;">
+      <div class="section-title"><h2>Valedictory Pictures</h2></div>
+      <p class="section-desc">Memorable valedictory moments — big, proud, emotional.</p>
+
+      <div class="gallery">
+        <div class="gallery-item" data-caption="Valedictory — Group on stage."><img src="https://placehold.co/800x600?text=Valedictory+1" alt="Valedictory 1"><div class="caption">Valedictory 1</div></div>
+        <div class="gallery-item" data-caption="Valedictory — Candid celebration."><img src="https://placehold.co/800x600?text=Valedictory+2" alt="Valedictory 2"><div class="caption">Valedictory 2</div></div>
+        <div class="gallery-item" data-caption="Valedictory — Proud moment."><img src="https://placehold.co/800x600?text=Valedictory+3" alt="Valedictory 3"><div class="caption">Valedictory 3</div></div>
+      </div>
+    </section> -->
+
+    <!-- Prom -->
+    <!-- <section id="prom" class="wrap fade-up" style="margin-top:38px;">
+      <div class="section-title"><h2>Prom Pictures</h2></div>
+      <p class="section-desc">Our best prom looks — sharp and classy.</p>
+
+      <div class="gallery">
+        <div class="gallery-item" data-caption="Prom — Suit vibes."><img src="https://placehold.co/800x600?text=Prom+1" alt="Prom 1"><div class="caption">Prom 1</div></div>
+        <div class="gallery-item" data-caption="Prom — Group pose."><img src="https://placehold.co/800x600?text=Prom+2" alt="Prom 2"><div class="caption">Prom 2</div></div>
+        <div class="gallery-item" data-caption="Prom — Dance floor."><img src="https://placehold.co/800x600?text=Prom+3" alt="Prom 3"><div class="caption">Prom 3</div></div>
+      </div>
+    </section> -->
+
+    <!-- Funny casts -->
+    <section id="funny" class="wrap fade-up" style="margin-top:38px;">
+      <div class="section-title"><h2>Funny Casts & Outtakes</h2></div>
+      <p class="section-desc">Laughs, pranks and bloopers — best to watch with sound on.</p>
+
+      <div class="gallery">
+        <div class="gallery-item" data-caption="Funny — Puppet faces."><img src="../FAI/Cast1.jpg" alt="Funny 1"><div class="caption">#FAMZY</div></div>
+        <div class="gallery-item" data-caption="Funny — Dance fail."><img src="../FAI/cast2.jpg" alt="Funny 2"><div class="caption">#FAMZY</div></div>
+        <div class="gallery-item" data-caption="Funny — Prank caught."><img src="../FAI/cast3.jpg" alt="Funny 3"><div class="caption">#FAMZY</div></div>
+
+        <div class="gallery-item" data-caption="Funny — Candid cracks."><img src="../FAI/cast4.jpg" alt="Funny 4"><div class="caption">#FAMZY</div></div>
+        <div class="gallery-item" data-caption="Funny — Costume day."><img src="../FAI/cast5.jpg"alt="Funny 5"><div class="caption">#TOMMY G</div></div>
+        <div class="gallery-item" data-caption="Funny — Outtake blooper."><img src="../FAI/cast6.jpg" alt="Funny 6"><div class="caption">#Ire</div></div>
+
+        <!-- <div class="gallery-item" data-caption="Funny — Costume day."><img src="../FAI/cast7.jpg"alt="Funny 5"><div class="caption">Funny 5</div></div> -->
+        <!-- <div class="gallery-item" data-caption="Funny — Outtake blooper."><video src="../FAI/cast8.mp4" alt="Funny 6"><div class="caption">Funny 6</div></div> -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Lightbox markup -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+    <button class="close" aria-label="Close">✕</button>
+    <button class="navbtn prev" aria-label="Previous">‹</button>
+    <div class="box">
+      <img src="" alt="" id="lightbox-img">
+      <div class="meta" id="lightbox-caption"></div>
+    </div>
+    <button class="navbtn next" aria-label="Next">›</button>
+  </div>
+
+  <footer>
+    <div class="foot-inner wrap">
+      <p>© <strong>Gbezome Kingdom</strong> — All photos & memories. Built with ❤️</p>
+      <p style="color:var(--muted)">Motto: HAD I KNOWN IS THE LAST COMMENT OF A FOOL.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('.navlinks');
+    menuBtn && menuBtn.addEventListener('click', ()=>{
+      const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', String(!expanded));
+      nav.style.display = expanded ? 'none' : 'flex';
+    });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const target = document.querySelector(a.getAttribute('href'));
+        if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); if(window.innerWidth < 900){ nav.style.display='none'; menuBtn.setAttribute('aria-expanded','false'); }}
+      })
+    })
+
+    // Fade-up entrance triggers
+    window.addEventListener('load', ()=>{
+      document.querySelectorAll('.fade-up').forEach((el,i)=>{ el.style.animationDelay = (i*80)+'ms'; el.classList.add('fade-up'); });
+    })
+
+    // Lightbox functionality
+    const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeBtn = lightbox.querySelector('.close');
+    const prevBtn = lightbox.querySelector('.prev');
+    const nextBtn = lightbox.querySelector('.next');
+    let currentIndex = -1;
+
+    function openLB(index){
+      const item = galleryItems[index];
+      const img = item.querySelector('img');
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || '';
+      lightboxCaption.textContent = item.dataset.caption || item.querySelector('.caption')?.innerText || '';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden','false');
+      currentIndex = index;
+    }
+    function closeLB(){
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden','true');
+      currentIndex = -1;
+    }
+    function nextLB(){ if(currentIndex < galleryItems.length-1) openLB(currentIndex+1); }
+    function prevLB(){ if(currentIndex > 0) openLB(currentIndex-1); }
+
+    galleryItems.forEach((g,i)=> g.addEventListener('click', ()=> openLB(i)));
+    closeBtn && closeBtn.addEventListener('click', closeLB);
+    nextBtn && nextBtn.addEventListener('click', nextLB);
+    prevBtn && prevBtn.addEventListener('click', prevLB);
+
+    // keyboard nav for lightbox
+    document.addEventListener('keydown', (e)=>{
+      if(lightbox.classList.contains('open')){
+        if(e.key === 'Escape') closeLB();
+        if(e.key === 'ArrowRight') nextLB();
+        if(e.key === 'ArrowLeft') prevLB();
+      }
+    });
+
+    // close lightbox when clicking outside image
+    lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLB(); });
+
+    // Intersection observer to highlight nav link on scroll (nice-to-have)
+    const sections = document.querySelectorAll('main section, .hero');
+    const navLinks = document.querySelectorAll('.navlinks a');
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          navLinks.forEach(a=> a.classList.toggle('active', a.getAttribute('href') === '#'+entry.target.id));
+        }
+      })
+    }, {threshold:0.45});
+    sections.forEach(s=> io.observe(s));
+
+  </script>
+</body>
+</html>
